@@ -29,6 +29,9 @@ func main() {
 			fmt.Println("===== Add Student =====")
 			student := getStudentDetails()
 			crud.AddStudent(student)
+		case 2:
+			fmt.Println("===== View List of Students =====")
+			crud.ViewStudents()
 		default:
 			fmt.Println("Invalid choice. Please choose a valid option (number 0-5).")
 		}
