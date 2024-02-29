@@ -100,3 +100,25 @@ func SearchStudent(query string) {
 	}
 }
 
+func UpdateStudent(student Student) {
+	db := connection.GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	query := "UPDATE students SET name=?, study_program=?, phone_number=?, address=? WHERE nim=?"
+
+	result, err := db.ExecContext(ctx, query, student.Name, student.StudyProgram, student.PhoneNumber, student.Address, student.NIM)
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		fmt.Printf("No student found with NIM: %s. Nothing was updated.\n", student.NIM)
+		return
+	}
+
+	fmt.Println("Successfully updated student!")
+}

@@ -21,6 +21,8 @@ func main() {
 			continue
 		}
 
+		fmt.Scanln()
+
 		switch choice {
 		case 0:
 			repeat = false
@@ -36,6 +38,12 @@ func main() {
 			fmt.Println("===== Search for Student by NIM or Name =====")
 			query := getSearchQuery()
 			crud.SearchStudent(query)
+		case 4:
+			fmt.Println("===== Update Student =====")
+			updateNIM := getUpdateNIM()
+			student := getStudentDetails()
+			student.NIM = updateNIM
+			crud.UpdateStudent(student)
 		default:
 			fmt.Println("Invalid choice. Please choose a valid option (number 0-5).")
 		}
@@ -79,7 +87,6 @@ func shouldContinue() bool {
 }
 
 func getStudentDetails() crud.Student {
-	fmt.Scanln()
 	var student crud.Student
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -107,11 +114,19 @@ func getStudentDetails() crud.Student {
 }
 
 func getSearchQuery() string {
-	fmt.Scanln()
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Enter NIM or Name to search: ")
 	scanner.Scan()
 	query := scanner.Text()
 
 	return query
+}
+
+func getUpdateNIM() string {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter NIM of the student to update: ")
+	scanner.Scan()
+	nim := scanner.Text()
+
+	return nim
 }
