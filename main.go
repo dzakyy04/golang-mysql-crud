@@ -28,13 +28,7 @@ func main() {
 		case 1:
 			fmt.Println("===== Add Student =====")
 			student := getStudentDetails()
-			success := crud.AddStudent(student)
-
-			if success {
-				fmt.Println("Successfully added student!")
-			} else {
-				fmt.Println("Failed to add student. Please try again.")
-			}
+			crud.AddStudent(student)
 		default:
 			fmt.Println("Invalid choice. Please choose a valid option (number 0-5).")
 		}

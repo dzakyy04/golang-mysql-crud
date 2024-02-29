@@ -14,7 +14,7 @@ type Student struct {
 	Address      string
 }
 
-func AddStudent(student Student) bool {
+func AddStudent(student Student) {
 	db := connection.GetConnection()
 	defer db.Close()
 
@@ -25,7 +25,7 @@ func AddStudent(student Student) bool {
 
 	if err != nil {
 		fmt.Println("Error:", err)
-		return false
+		return
 	}
-	return true
+	fmt.Println("Successfully added student!")
 }
