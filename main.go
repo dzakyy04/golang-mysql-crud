@@ -27,6 +27,7 @@ func main() {
 		case 0:
 			repeat = false
 			fmt.Println("Exiting program. Goodbye!")
+			return
 		case 1:
 			fmt.Println("===== Add Student =====")
 			student := getStudentDetails()
@@ -40,16 +41,19 @@ func main() {
 			crud.SearchStudent(query)
 		case 4:
 			fmt.Println("===== Update Student =====")
-			updateNIM := getUpdateNIM()
+			updateNIM := getNIM()
 			student := getStudentDetails()
-			student.NIM = updateNIM
-			crud.UpdateStudent(student)
+			crud.UpdateStudent(updateNIM, student)
+		case 5:
+			fmt.Println("===== Delete Student =====")
+			deleteNIM := getNIM()
+			crud.DeleteStudent(deleteNIM)
 		default:
 			fmt.Println("Invalid choice. Please choose a valid option (number 0-5).")
 		}
 
-		isContinue := shouldContinue()
-		if !isContinue {
+		shouldContinue := shouldContinue()
+		if !shouldContinue {
 			repeat = false
 		}
 	}
@@ -122,9 +126,9 @@ func getSearchQuery() string {
 	return query
 }
 
-func getUpdateNIM() string {
+func getNIM() string {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("Enter NIM of the student to update: ")
+	fmt.Print("Enter NIM of the student: ")
 	scanner.Scan()
 	nim := scanner.Text()
 

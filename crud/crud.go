@@ -100,14 +100,14 @@ func SearchStudent(query string) {
 	}
 }
 
-func UpdateStudent(student Student) {
+func UpdateStudent(nim string, student Student) {
 	db := connection.GetConnection()
 	defer db.Close()
 
 	ctx := context.Background()
-	query := "UPDATE students SET name=?, study_program=?, phone_number=?, address=? WHERE nim=?"
+	query := "UPDATE students SET nim=?, name=?, study_program=?, phone_number=?, address=? WHERE nim=?"
 
-	result, err := db.ExecContext(ctx, query, student.Name, student.StudyProgram, student.PhoneNumber, student.Address, student.NIM)
+	result, err := db.ExecContext(ctx, query, student.NIM, student.Name, student.StudyProgram, student.PhoneNumber, student.Address, nim)
 
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -121,4 +121,27 @@ func UpdateStudent(student Student) {
 	}
 
 	fmt.Println("Successfully updated student!")
+}
+
+func DeleteStudent(nim string) {
+	db := connection.GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	query := "DELETE FROM students WHERE nim=?"
+
+	result, err := db.ExecContext(ctx, query, nim)
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		fmt.Printf("No student found with NIM: %s. Nothing was deleted.\n", nim)
+		return
+	}
+
+	fmt.Println("Successfully deleted student with NIM:", nim)
 }
