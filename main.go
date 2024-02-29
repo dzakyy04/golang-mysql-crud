@@ -32,6 +32,10 @@ func main() {
 		case 2:
 			fmt.Println("===== View List of Students =====")
 			crud.ViewStudents()
+		case 3:
+			fmt.Println("===== Search for Student by NIM or Name =====")
+			query := getSearchQuery()
+			crud.SearchStudent(query)
 		default:
 			fmt.Println("Invalid choice. Please choose a valid option (number 0-5).")
 		}
@@ -47,7 +51,7 @@ func showMenu() {
 	fmt.Println("===== STUDENT CRUD =====")
 	fmt.Println("1. Add Student")
 	fmt.Println("2. View List of Students")
-	fmt.Println("3. Search for Student")
+	fmt.Println("3. Search for Student by NIM or Name")
 	fmt.Println("4. Update Student")
 	fmt.Println("5. Delete Student")
 	fmt.Println("0. Exit")
@@ -100,4 +104,14 @@ func getStudentDetails() crud.Student {
 	student.Address = scanner.Text()
 
 	return student
+}
+
+func getSearchQuery() string {
+	fmt.Scanln()
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter NIM or Name to search: ")
+	scanner.Scan()
+	query := scanner.Text()
+
+	return query
 }

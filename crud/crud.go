@@ -62,3 +62,41 @@ func ViewStudents() {
 		return
 	}
 }
+
+func SearchStudent(query string) {
+	db := connection.GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	searchQuery := "SELECT * FROM students WHERE nim LIKE ? OR name LIKE ?"
+	rows, err := db.QueryContext(ctx, searchQuery, "%"+query+"%", "%"+query+"%")
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer rows.Close()
+
+	index := 1
+	for rows.Next() {
+		var student Student
+		err := rows.Scan(&student.NIM, &student.Name, &student.StudyProgram, &student.PhoneNumber, &student.Address)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		fmt.Printf("%d. NIM: %s, Name: %s, Study Program: %s, Phone Number: %s, Address: %s\n", index, student.NIM, student.Name, student.StudyProgram, student.PhoneNumber, student.Address)
+		index++
+	}
+
+	if err := rows.Err(); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	if index == 1 {
+		fmt.Println("No student found with NIM or Name:", query)
+	}
+}
+
